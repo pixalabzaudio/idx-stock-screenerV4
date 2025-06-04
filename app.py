@@ -240,14 +240,13 @@ def create_rsi_chart_image(rsi_values, current_rsi):
     if rsi_values is None or len(rsi_values) == 0:
         # Return a placeholder or empty image bytes
         fig, ax = plt.subplots(figsize=(3, 1.5))
-        ax.text(0.5, 0.5, "No RSI Data", ha=\'center
-	, va=\'center
-	)
+        # Corrected ax.text call
+        ax.text(0.5, 0.5, "No RSI Data", ha='center', va='center') 
         ax.set_xticks([])
         ax.set_yticks([])
         buf = io.BytesIO()
-        plt.savefig(buf, format=\'png
-	)
+        # Corrected savefig call
+        plt.savefig(buf, format='png') 
         plt.close(fig)
         buf.seek(0)
         return buf
@@ -257,22 +256,18 @@ def create_rsi_chart_image(rsi_values, current_rsi):
     
     # Plot RSI line
     x = range(len(rsi_values))
-    ax.plot(x, rsi_values, color=\'blue
-	, linewidth=1.5)
+    # Corrected plot call
+    ax.plot(x, rsi_values, color='blue', linewidth=1.5) 
     
     # Add horizontal lines for overbought and oversold levels
-    ax.axhline(y=OVERBOUGHT_THRESHOLD, color=\'green
-	, linestyle=\'--
-	, alpha=0.7, linewidth=1)
-    ax.axhline(y=OVERSOLD_THRESHOLD, color=\'red
-	, linestyle=\'--
-	, alpha=0.7, linewidth=1)
+    # Corrected axhline calls
+    ax.axhline(y=OVERBOUGHT_THRESHOLD, color='green', linestyle='--', alpha=0.7, linewidth=1) 
+    ax.axhline(y=OVERSOLD_THRESHOLD, color='red', linestyle='--', alpha=0.7, linewidth=1) 
     
     # Fill areas
-    ax.fill_between(x, OVERBOUGHT_THRESHOLD, 100, color=\'green
-	, alpha=0.1)
-    ax.fill_between(x, 0, OVERSOLD_THRESHOLD, color=\'red
-	, alpha=0.1)
+    # Corrected fill_between calls
+    ax.fill_between(x, OVERBOUGHT_THRESHOLD, 100, color='green', alpha=0.1) 
+    ax.fill_between(x, 0, OVERSOLD_THRESHOLD, color='red', alpha=0.1) 
     
     # Set y-axis limits
     ax.set_ylim(0, 100)
@@ -287,22 +282,18 @@ def create_rsi_chart_image(rsi_values, current_rsi):
     
     # Set y-axis ticks
     ax.set_yticks([0, OVERSOLD_THRESHOLD, OVERBOUGHT_THRESHOLD, 100])
-    ax.set_yticklabels([\'0
-	, str(OVERSOLD_THRESHOLD), str(OVERBOUGHT_THRESHOLD), \'100
-	], fontsize=8)
+    # Corrected set_yticklabels call
+    ax.set_yticklabels(['0', str(OVERSOLD_THRESHOLD), str(OVERBOUGHT_THRESHOLD), '100'], fontsize=8) 
     
     # Add current RSI value as text
-    ax.text(len(rsi_values)-1, current_rsi, f\' {current_rsi:.1f}
-	, 
-            verticalalignment=\'center
-	, fontsize=9, 
-            color=\'black
-	, fontweight=\'bold
-	)
+    # Corrected ax.text call
+    ax.text(len(rsi_values)-1, current_rsi, f' {current_rsi:.1f}', 
+            verticalalignment='center', fontsize=9, 
+            color='black', fontweight='bold') 
     
     # Highlight the current RSI with a dot
-    ax.scatter(len(rsi_values)-1, current_rsi, color=\'blue
-	, s=30, zorder=5)
+    # Corrected scatter call
+    ax.scatter(len(rsi_values)-1, current_rsi, color='blue', s=30, zorder=5) 
     
     # Add title showing RSI period
     ax.set_title(f"RSI({RSI_PERIOD}) Chart", fontsize=10)
@@ -316,9 +307,8 @@ def create_rsi_chart_image(rsi_values, current_rsi):
     
     # Convert plot to PNG image
     buf = io.BytesIO()
-    plt.savefig(buf, format=\'png
-	, dpi=100, bbox_inches=\'tight
-	, pad_inches=0.1)
+    # Corrected savefig call
+    plt.savefig(buf, format='png', dpi=100, bbox_inches='tight', pad_inches=0.1) 
     plt.close(fig)
     buf.seek(0)
     
@@ -538,7 +528,7 @@ def main():
         This application screens all stocks listed on the Indonesia Stock Exchange (IDX) using a two-pass approach:
         
         **First Pass - Technical Screening:**
-        - RSI({RSI_PERIOD}) with signals for oversold (RSI<{OVERSOLD_THRESHOLD}) and overbought (RSI>{OVERBOUGHT_THRESHOLD}) conditions (using Wilder\'s Smoothing)
+        - RSI({RSI_PERIOD}) with signals for oversold (RSI<{OVERSOLD_THRESHOLD}) and overbought (RSI>{OVERBOUGHT_THRESHOLD}) conditions (using Wilder's Smoothing)
         - Custom RSI range filtering
         
         **Second Pass - Fundamental Screening:**
@@ -571,8 +561,7 @@ def main():
                     len(IDX_ALL_TICKERS_YF),
                     st.session_state.results_cache.get("technical_count", 0),
                     st.session_state.results_cache.get("final_count", 0),
-                    f"{st.session_state.results_cache.get(\'elapsed_time
-	, 0):.2f}",
+                    f"{st.session_state.results_cache.get('elapsed_time', 0):.2f}",
                     st.session_state.results_cache.get("errors", 0)
                 ]
             })
@@ -756,8 +745,7 @@ def main():
     else:
         results = st.session_state.results_cache
         # Show cached status
-        status_text.text(f"Using cached results from {st.session_state.last_refresh.strftime(\'%H:%M:%S
-	)}")
+        status_text.text(f"Using cached results from {st.session_state.last_refresh.strftime('%H:%M:%S')}")
         progress_bar.progress(1.0)
     
     # Display results in the first tab
@@ -770,8 +758,7 @@ def main():
             with col2:
                 st.metric("Final Results", results.get("final_count", 0))
             with col3:
-                st.metric("Processing Time", f"{results.get(\'elapsed_time
-	, 0):.2f}s")
+                st.metric("Processing Time", f"{results.get('elapsed_time', 0):.2f}s")
             
             # Display results table
             with results_placeholder.container():
@@ -805,8 +792,7 @@ def main():
                     st.download_button(
                         label="📥 Download results as CSV",
                         data=csv,
-                        file_name=f"idx_screener_results_{datetime.now().strftime(\'%Y%m%d_%H%M%S
-	)}.csv",
+                        file_name=f"idx_screener_results_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
                         mime="text/csv",
                     )
         else:
@@ -827,10 +813,9 @@ def main():
     # Set up auto-refresh
     if refresh and refresh_interval > 0:
         next_refresh = st.session_state.last_refresh + pd.Timedelta(minutes=refresh_interval)
-        st.write(f"Auto-refreshing every {refresh_interval} minutes. Next update: {next_refresh.strftime(\'%H:%M:%S
-	)}")
+        st.write(f"Auto-refreshing every {refresh_interval} minutes. Next update: {next_refresh.strftime('%H:%M:%S')}")
         
-        # Check if it\'s time to refresh
+        # Check if it's time to refresh
         if datetime.now() >= next_refresh:
             time.sleep(1)  # Small delay
             st.experimental_rerun()
@@ -839,8 +824,7 @@ def main():
     st.markdown(f"""
     <div style="text-align: center; margin-top: 30px; padding: 10px; border-top: 1px solid #ddd;">
         <p style="color: #666; font-size: 0.8em;">
-            IDX Stock Screener | RSI({RSI_PERIOD}) Analysis (Wilder\'s Smoothing) | Data from Yahoo Finance | Updated: {st.session_state.last_refresh.strftime(\'%Y-%m-%d %H:%M:%S
-	) if st.session_state.last_refresh else "Never"}
+            IDX Stock Screener | RSI({RSI_PERIOD}) Analysis (Wilder's Smoothing) | Data from Yahoo Finance | Updated: {st.session_state.last_refresh.strftime('%Y-%m-%d %H:%M:%S') if st.session_state.last_refresh else "Never"}
         </p>
     </div>
     """, 
